@@ -10,7 +10,7 @@ namespace LudicoGTK
         {
             Application.Init();
 
-            var app = new Application("org.LudicoGTK.LudicoGTK", GLib.ApplicationFlags.None);
+            var app = new Application("uk.argonptg.Ludico", GLib.ApplicationFlags.None);
             app.Register(GLib.Cancellable.Current);
 
             var win = new MainWindow();
