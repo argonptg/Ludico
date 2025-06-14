@@ -68,7 +68,6 @@
           <object class="GtkBox" id="_searchPage">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="margin-end">8</property>
             <property name="orientation">vertical</property>
             <child>
               <object class="GtkBox">

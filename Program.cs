@@ -1,5 +1,6 @@
 using System;
 using Gtk;
+using LudicoGTK.Ui;
 
 namespace LudicoGTK
 {
@@ -17,6 +18,7 @@ namespace LudicoGTK
             app.AddWindow(win);
 
             AppGlobals.appInstance = app;
+            AppGlobals.window = win;
             
             win.Show();
             Application.Run();

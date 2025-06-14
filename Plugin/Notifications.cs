@@ -1,6 +1,6 @@
 using GLib;
 
-namespace LudicoGTK.Plugin.Modules;
+namespace LudicoGTK.Plugin;
 
 public class Notifications
 {

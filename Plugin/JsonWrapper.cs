@@ -1,7 +1,7 @@
 using NLua;
 using Newtonsoft.Json.Linq;
 
-namespace LudicoGTK.Plugin.Modules;
+namespace LudicoGTK.Plugin;
 
 public class JsonWrapper
 {
