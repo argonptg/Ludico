@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using LudicoGTK.Init;
 using Gtk;
 using LudicoGTK.LuaPlugin;
+using LudicoGTK.Search;
 using NLua;
 using UI = Gtk.Builder.ObjectAttribute;
 using IOPath = System.IO.Path;
@@ -47,14 +48,28 @@ namespace LudicoGTK.Ui
 
         private async void SearchBar_Handler(object sender, EventArgs a)
         { 
-            Console.WriteLine($"Haiiiiiii :3c!!!!\n Input: {_searchBar.Text}");
+            Console.WriteLine($"Input: {_searchBar.Text}");
 
-            TreeIter iter;
+            var search = await SearchManager.Search(_searchBar.Text);
+
+            foreach (var game in search)
+            {
+                Console.WriteLine($@"
+{game.Name}
+========================
+Cover URL: {game.Cover.Value.Url.Replace("//", "https://").Replace("t_thumb", "t_cover_big_2x")}
+ID: {game.Id}
+Url: {game.Url}
+========================
+                ");
+            }
+            
+            /*TreeIter iter;
             if (_pluginCombo.GetActiveIter(out iter))
             {
                 string pluginPath = (string)_pluginCombo.Model.GetValue(iter, 1);
                 AppGlobals.Lua.DoFile(pluginPath);
-            }
+            }*/
         }
 
         private void DisplaySearchResults(List<string> results)

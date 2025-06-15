@@ -45,77 +45,65 @@ public class AppInitializer
 
     private void InitLua()
     {
-        // global "class" for json
         _lua.DoString("JsonWrapper = {}"); 
+        _lua.DoString("Notifications = {}");
+        _lua.DoString("client = {}");
+        _lua.DoString("http = {}");
+
+        // json
         _lua.RegisterFunction(
-            "json_parse_internal", 
+            "JsonWrapper.parse", 
             null, 
             typeof(JsonWrapper).GetMethod("ParseJson"));
-        _lua.DoString("JsonWrapper.parse = json_parse_internal");
             
         // notifications
-        _lua.DoString("Notifications = {}");
         _lua.RegisterFunction(
-            "internal_push",
+            "Notifications.push",
             null,
             typeof(Notifications).GetMethod("Push"));
         _lua.RegisterFunction(
-            "internal_success",
+            "Notifications.push_success",
             null,
             typeof(Notifications).GetMethod("PushSuccess"));
         _lua.RegisterFunction(
-            "internal_error",
+            "Notifications.push_error",
             null,
             typeof(Notifications).GetMethod("PushError"));
         _lua.RegisterFunction(
-            "internal_warning",
+            "Notifications.push_warning",
             null,
             typeof(Notifications).GetMethod("PushWarning"));
-        _lua.DoString("Notifications.push = internal_push");
-        _lua.DoString("Notifications.push_success = internal_success");
-        _lua.DoString("Notifications.push_error = internal_error");
-        _lua.DoString("Notifications.push_warning = internal_warning");
-        
+
         // client
-        _lua.DoString("client = {}");
         _lua.RegisterFunction(
-            "internal_addcb",
+            "client.add_callback",
             null,
             typeof(Client).GetMethod("AddCallback"));
         _lua.RegisterFunction(
-            "internal_log",
+            "client.log",
             null,
             typeof(Client).GetMethod("Log"));
         _lua.RegisterFunction(
-            "internal_scriptspath",
+            "client.GetScriptsPath",
             null,
             typeof(Client).GetMethod("GetScriptsPath"));
         _lua.RegisterFunction(
-            "internal_version",
+            "client.GetVersion",
             null,
             typeof(Client).GetMethod("GetVersion"));
         _lua.RegisterFunction(
-            "internal_verfloat",
+            "client.GetVersionFloat",
             null,
             typeof(Client).GetMethod("GetVersionFloat"));
         _lua.RegisterFunction(
-            "internal_verdouble",
+            "client.GetVersionDouble",
             null,
             typeof(Client).GetMethod("GetVersionDouble"));
         
-        _lua.DoString("client.add_callback = internal_addcb");
-        _lua.DoString("client.log = internal_log");
-        _lua.DoString("client.GetVersion = internal_version");
-        _lua.DoString("client.GetVersionFloat = internal_verfloat");
-        _lua.DoString("client.GetVersionDouble = internal_verdouble");
-        
         // http
-        _lua.DoString("http = {}");
         _lua.RegisterFunction(
-            "internal_get",
+            "http.get",
             null,
             typeof(Http).GetMethod("Get"));
-        
-        _lua.DoString("http.get = internal_get");
     }
 }

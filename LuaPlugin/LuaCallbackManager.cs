@@ -12,11 +12,13 @@ public class LuaCallbackManager
         Callbacks[name] = func;
     }
 
-    public static void InvokeCallback(string name, params object[] args)
+    public static object[]? InvokeCallback(string name, params object[] args)
     {
         if (Callbacks.TryGetValue(name, out var func))
         {
-            func.Call(args);
+            return func.Call(args);
         }
+
+        return null;
     }
 }
