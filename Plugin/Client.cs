@@ -1,5 +1,4 @@
 using System;
-using LudicoGTK.LuaPlugin;
 using NLua;
 
 namespace LudicoGTK.Plugin;

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using NLua;
 
-namespace LudicoGTK.LuaPlugin;
+namespace LudicoGTK.Plugin;
 
 public class LuaCallbackManager
 {

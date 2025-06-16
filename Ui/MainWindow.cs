@@ -1,24 +1,21 @@
-using System;
-using System.Collections.Generic;
-using LudicoGTK.Init;
 using Gtk;
-using LudicoGTK.LuaPlugin;
+using System;
+using LudicoGTK.Init;
+using LudicoGTK.Logger;
 using LudicoGTK.Search;
-using NLua;
 using UI = Gtk.Builder.ObjectAttribute;
-using IOPath = System.IO.Path;
 
 namespace LudicoGTK.Ui
 {
     public class MainWindow : Window
     {
         [UI] private SearchEntry _searchBar = null!;
-        [UI] private Box _resultsBox = null!;
+        [UI] private Grid _resultsBox = null!;
         [UI] private ListStore pluginList = null!;
         [UI] private ComboBox _pluginCombo = null!;
         
         public MainWindow() : this(new Builder("MainWindow.glade")) { }
-
+        
         private MainWindow(Builder builder) : base(builder.GetRawOwnedObject("MainWindow"))
         {
             builder.Autoconnect(this);
@@ -48,40 +45,79 @@ namespace LudicoGTK.Ui
 
         private async void SearchBar_Handler(object sender, EventArgs a)
         { 
-            Console.WriteLine($"Input: {_searchBar.Text}");
-
+            Log.Info($"Search results for '{_searchBar.Text}'");
+            
             var search = await SearchManager.Search(_searchBar.Text);
 
+            // NEW: Define your max rows and columns here
+            int maxCol = 3;
+            int maxRow = 5; // For example, stop after 5 rows are filled
+
+            // Clear out everything
+            while (_resultsBox.Children.Length > 0)
+            {
+                _resultsBox.Remove(_resultsBox.Children[0]);
+            }
+
+            int topPos = 0;
+            int leftPos = 0;
+
+            /*
+             * Note to self:
+             * NEVER TRY TO CODE SICK AGAIN HOLY SHIT I CAN'T GET
+             * ANYTHING DONE SO I GOT GEMINI TO FIGURE OUT THE SIMPLEST
+             * STUFF
+             */
             foreach (var game in search)
             {
-                Console.WriteLine($@"
-{game.Name}
-========================
-Cover URL: {game.Cover.Value.Url.Replace("//", "https://").Replace("t_thumb", "t_cover_big_2x")}
-ID: {game.Id}
-Url: {game.Url}
-========================
-                ");
+                // Check if you've reached the maximum number of rows.
+                // If so, stop adding more widgets.
+                if (topPos >= maxRow)
+                {
+                    break; // Exit the foreach loop
+                }
+
+                // Tends to error out a lot, so I just said fuck it
+                // and put it on a try/catch
+                try
+                {
+                    if (game == null)
+                    {
+                        continue;
+                    }
+
+                    var label = new Label(game.Name.Truncate(25)); // eh, 25 is good enough
+        
+                    // IMPORTANT: Corrected the order back to (left, top)
+                    _resultsBox.Attach(label, leftPos, topPos, 1, 1);
+                    
+                    leftPos++;  // Shoutout to gemini for this banger code
+
+                    // Using the maxCol variable for the check.
+                    // Using >= makes sure it wraps after the 3rd column (0, 1, 2).
+                    if (leftPos >= maxCol)
+                    {
+                        leftPos = 0;
+                        topPos++;
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine($"Error while processing the game, Skipping.\nDetails: {e}");
+                }
             }
             
-            /*TreeIter iter;
-            if (_pluginCombo.GetActiveIter(out iter))
-            {
-                string pluginPath = (string)_pluginCombo.Model.GetValue(iter, 1);
-                AppGlobals.Lua.DoFile(pluginPath);
-            }*/
+            _resultsBox.ShowAll();
         }
+    }
+}
 
-        private void DisplaySearchResults(List<string> results)
-        {
-            foreach (var result in results)
-            {
-                var label = new Gtk.Label(result);
-                
-                _resultsBox.PackStart(label, false, false, 0);
-                
-                label.Show();
-            }
-        }
+public static class StringExt
+{
+    public static string? Truncate(this string? value, int maxLength, string truncationSuffix = "…")
+    {
+        return value?.Length > maxLength
+            ? value.Substring(0, maxLength) + truncationSuffix
+            : value;
     }
 }

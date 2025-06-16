@@ -20,4 +20,8 @@
     <PackageReference Include="RestSharp" Version="112.1.1-alpha.0.4" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="LuaPlugin\" />
+  </ItemGroup>
+
 </Project>
