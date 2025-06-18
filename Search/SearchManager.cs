@@ -1,67 +1,67 @@
 using IGDB;
 using IGDB.Models;
+using craftersmine.SteamGridDBNet;
 using System.Threading.Tasks;
 using System.IO;
 using LudicoGTK.Utils;
+using Gtk;
+using System;
 
 namespace LudicoGTK.Search;
 
 public class SearchManager
 {
     // i mean fuck it eh? these tokens are easy to get
-    private static readonly string IGDBClientId = "ri2blwejzic370dkj5sbktwn1o66ju";
-    private static readonly string IGDBClientSecret = "k93bz8da1gf6baqaipem1nvyhx4td3";
+    private static readonly string SGDBApiKey = "62e37ba691f43e094075638e58af5208";
 
-    public static async Task<Game[]> Search(string query)
+    private static readonly SteamGridDb sgdb = new(SGDBApiKey);
+
+    public static async Task<SteamGridDbGame[]> Search(string query)
     {
-        var igdb = IGDBClient.CreateWithDefaults(
-            IGDBClientId,
-            IGDBClientSecret
-        );
+        var gameSearch = await sgdb.SearchForGamesAsync(query);
 
-        var ids = "0,3,6,14,4,5,7,8,11,12,15,16,18,19,21,22,23,25,26,27,29,30,32,33,35,37,38,41,42,44,50,48,49,130,167,169";
-        // no idea why 0 is required, as there's no docs for it
+        if (gameSearch.Length < 0)
+        {
+            Log.Error($"No games found for query {query}");
+            return gameSearch;
+        }
 
-        var result = await igdb.QueryAsync<Game>(
-            IGDBClient.Endpoints.Games,
-            query: $@"
-            fields age_ratings, aggregated_rating, cover.*, game_engines, genres.name, name, platforms.abbreviation, tags, url;
-            where (category = ({ids})) 
-                & name ~ ""{query}""*
-                & version_parent = null
-                & parent_game = null;
-            sort aggregated_rating desc;
-            limit 20;"
-        );
-
-        foreach (var game in result)
+        // now the long game, fuck
+        foreach (var game in gameSearch)
         {
             var downloadPath = Path.Combine(
                 AppGlobals.GetDocumentsPath(),
                 "cache",
                 $"{game.Id}.jpg");
 
-            if (game?.Cover?.Value?.Url != null)
-            {
-                var url = game.Cover.Value.Url
-                        .Replace("//", "https://")
-                        .Replace("t_thumb", "t_cover_big_2x");
+            var grids = await sgdb.GetGridsByGameIdAsync(
+                game.Id,
+                types: SteamGridDbTypes.Static,
+                dimensions: SteamGridDbDimensions.W600H900,
+                formats: SteamGridDbFormats.Jpeg
+            );
 
-                if (!File.Exists(downloadPath))
-                {
-                    Log.Info($"Downloading image for game: {game.Name}; on Path: {downloadPath}");
-
-                    await Downloader.DownloadFileAsync(url, downloadPath);
-                }
-            }
-            else
+            if (grids.Length == 0)
             {
                 Log.Warn($"No cover found for game: {game.Name}. Downloading sample image");
-                await Downloader.DownloadFileAsync($"https://dummyimage.com/190x253/000000/fff.jpg&text={game.Name}", downloadPath);
+                await Downloader.DownloadFileAsync($"https://dummyimage.com/600x900/000000/fff.jpg&text={game.Name}", downloadPath);
+            }
+
+            if (!File.Exists(downloadPath))
+            {
+                try
+                {
+                    // download only the first grid
+                    Log.Info($"Downloading image for game: {game.Name}; on Path: {downloadPath}");
+                    await Downloader.DownloadFileAsync(grids[0].FullImageUrl, downloadPath);
+                }
+                catch (Exception)
+                {
+                    Log.Error($"Failed to download grid for game {game.Name}");
+                }
             }
         }
 
-
-        return result;
+        return gameSearch;
     }
 }

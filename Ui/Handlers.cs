@@ -13,9 +13,9 @@ public class Handlers
 
     public async void SearchBar_Handler(object sender, EventArgs a)
     {
-        Log.Info($"Search results for '{AppGlobals.searchBar.Text}'");
+        Log.Info($"Search results for '{AppGlobals.searchBar.Text.ToLower()}'");
 
-        var search = await SearchManager.Search(AppGlobals.searchBar.Text);
+        var search = await SearchManager.Search(AppGlobals.searchBar.Text.ToLower());
 
         // NEW: Define your max rows and columns here
         int maxCol = 3;

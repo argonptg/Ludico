@@ -1,4 +1,5 @@
 using System;
+using craftersmine.SteamGridDBNet;
 using Gdk;
 using Gtk;
 using IGDB.Models;
@@ -9,7 +10,7 @@ namespace LudicoGTK.Ui;
 
 public class Wrappers
 {
-    public static void SwitchPage(Game game)
+    public static void SwitchPage(SteamGridDbGame game)
     {
         var pageName = "game_page";
 
@@ -69,7 +70,7 @@ public class Wrappers
         AppGlobals.pluginList.AppendValues(pluginName, pluginPath);
     }
 
-    public void CreateGameBtn(Game game, Grid container, int leftPos, int topPos)
+    public void CreateGameBtn(SteamGridDbGame game, Grid container, int leftPos, int topPos)
     {
         var gameBtn = new Button();
         var buttonBox = new Box(Orientation.Vertical, 5);
@@ -81,7 +82,7 @@ public class Wrappers
         {
             // Get the image path, i.e /home/$USER/Documents/Ludico/cache
             var imagePath =
-                IOPath.Combine(AppGlobals.GetDocumentsPath(), "cache", $"{game.Id ?? -1}.jpg");
+                IOPath.Combine(AppGlobals.GetDocumentsPath(), "cache", $"{game.Id}.jpg");
 
             // I still don't know what a pixbuf is
             var originalPixbuf = new Pixbuf(imagePath);
