@@ -38,7 +38,7 @@ The table below tracks the implementation status for **Project GLD's** methods:
 | `Notifications`| ✅ Implemented | Provides native desktop notifications.          |
 | `SteamAPI`    | ❌ Not Planned | Integration with the Steam API.                 |
 | `Zip`         | ❌ Planned | For handling compressed archive files.          |
-| `GLDConsole`  | ❌ Not Planned | Access to the Ludico console can be had by running it via the terminal |
+| `GLDConsole`  | ❌ Not Planned | Access to the Ludico logs can be had by running it via the terminal |
 | `DLL`         | ❌ Not Planned | Support for DLL injection into apps |
 
 ### Future: Hydra Source Support
