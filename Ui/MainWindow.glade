@@ -3,20 +3,12 @@
 <!-- Created with Cambalache 0.96.1 -->
 <interface>
   <requires lib="gtk+" version="3.18"/>
-  <object class="GtkListStore" id="pluginList">
-    <columns>
-      <!-- column-name Text -->
-      <column type="gchararray"/>
-      <!-- column-name Path -->
-      <column type="gchararray"/>
-    </columns>
-  </object>
   <object class="GtkWindow" id="MainWindow">
     <property name="can-focus">False</property>
     <property name="default-width">700</property>
     <property name="default-height">400</property>
     <child>
-      <object class="GtkStack" id="_mainStack">
+      <object class="GtkStack" id="_parentStack">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
         <child>
@@ -62,7 +54,7 @@
           </object>
           <packing>
             <property name="name">library</property>
-            <property name="title">Library</property>
+            <property name="title" translatable="yes">Library</property>
           </packing>
         </child>
         <child>
@@ -74,13 +66,14 @@
               <object class="GtkBox">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
+                <property name="margin-left">8</property>
+                <property name="margin-right">8</property>
                 <property name="margin-start">8</property>
                 <property name="margin-end">8</property>
                 <child>
                   <object class="GtkSearchEntry" id="_searchBar">
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
-                    <property name="margin-end">8</property>
                     <property name="primary-icon-name">edit-find-symbolic</property>
                     <property name="primary-icon-activatable">False</property>
                     <property name="primary-icon-sensitive">False</property>
@@ -89,26 +82,6 @@
                     <property name="expand">True</property>
                     <property name="fill">True</property>
                     <property name="position">0</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkComboBox" id="_pluginCombo">
-                    <property name="visible">True</property>
-                    <property name="can-focus">False</property>
-                    <property name="model">pluginList</property>
-                    <property name="has-entry">True</property>
-                    <property name="entry-text-column">0</property>
-                    <child internal-child="entry">
-                      <object class="GtkEntry" id="_pluginEntry">
-                        <property name="can-focus">False</property>
-                        <property name="placeholder-text" translatable="yes">Select a plugin</property>
-                      </object>
-                    </child>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">1</property>
                   </packing>
                 </child>
               </object>
@@ -132,6 +105,16 @@
                       <object class="GtkGrid" id="_resultsBox">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
+                        <property name="margin-left">8</property>
+                        <property name="margin-right">8</property>
+                        <property name="margin-start">8</property>
+                        <property name="margin-end">8</property>
+                        <property name="margin-top">8</property>
+                        <property name="margin-bottom">8</property>
+                        <property name="hexpand">True</property>
+                        <property name="vexpand">False</property>
+                        <property name="row-spacing">8</property>
+                        <property name="column-spacing">8</property>
                         <child>
                           <placeholder/>
                         </child>
@@ -164,7 +147,7 @@
           </object>
           <packing>
             <property name="name">search</property>
-            <property name="title">Search</property>
+            <property name="title" translatable="yes">Search</property>
             <property name="position">1</property>
           </packing>
         </child>
@@ -188,46 +171,12 @@
           </object>
           <packing>
             <property name="name">download</property>
-            <property name="title">Downloads</property>
+            <property name="title" translatable="yes">Downloads</property>
             <property name="position">2</property>
           </packing>
         </child>
         <child>
-          <!-- n-columns=3 n-rows=3 -->
-          <object class="GtkGrid" id="_gamePage">
-            <property name="visible">True</property>
-            <property name="can-focus">False</property>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-          </object>
-          <packing>
-            <property name="position">3</property>
-          </packing>
+          <placeholder/>
         </child>
       </object>
     </child>
@@ -242,10 +191,18 @@
             <property name="visible">True</property>
             <property name="can-focus">False</property>
             <property name="homogeneous">True</property>
-            <property name="stack">_mainStack</property>
+            <property name="stack">_parentStack</property>
           </object>
         </child>
       </object>
     </child>
+  </object>
+  <object class="GtkListStore" id="pluginList">
+    <columns>
+      <!-- column-name text -->
+      <column type="gchararray"/>
+      <!-- column-name path -->
+      <column type="gchararray"/>
+    </columns>
   </object>
 </interface>

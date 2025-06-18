@@ -1,6 +1,6 @@
 using System;
 
-namespace LudicoGTK.Logger;
+namespace LudicoGTK.Utils;
 
 public abstract class Log // i dunno what abstract means i just know squiggly line gone
 {

@@ -14,6 +14,7 @@ public class AppInitializer
     private readonly Lua _lua = AppGlobals.Lua;
     private static string DocumentsPath = AppGlobals.GetDocumentsPath();
     private static string PluginPath = Path.Combine(DocumentsPath, "plugins");
+    private static string CachePath = Path.Combine(DocumentsPath, "cache");
     
     public void Initialize()
     {
@@ -23,10 +24,10 @@ public class AppInitializer
 
     private void InitDirs()
     {
-        // Ensures the dirs/files actually exists
-        Console.WriteLine(DocumentsPath);
-        
+        // Ensures the dirs/files actually exists        
         Directory.CreateDirectory(PluginPath);
+        Directory.CreateDirectory(CachePath);
+
         File.WriteAllText(
             Path.Combine(DocumentsPath, "config.json"),
             $@"{{ version: ""{AppGlobals.Version}"" }}"
@@ -45,17 +46,18 @@ public class AppInitializer
 
     private void InitLua()
     {
-        _lua.DoString("JsonWrapper = {}"); 
+        _lua.DoString("JsonWrapper = {}");
         _lua.DoString("Notifications = {}");
         _lua.DoString("client = {}");
         _lua.DoString("http = {}");
+        _lua.DoString("game = {}");
 
         // json
         _lua.RegisterFunction(
-            "JsonWrapper.parse", 
-            null, 
+            "JsonWrapper.parse",
+            null,
             typeof(JsonWrapper).GetMethod("ParseJson"));
-            
+
         // notifications
         _lua.RegisterFunction(
             "Notifications.push",
@@ -99,11 +101,17 @@ public class AppInitializer
             "client.GetVersionDouble",
             null,
             typeof(Client).GetMethod("GetVersionDouble"));
-        
+
         // http
         _lua.RegisterFunction(
             "http.get",
             null,
             typeof(Http).GetMethod("Get"));
+
+        // game
+        _lua.RegisterFunction(
+            "game.getgamename",
+            null,
+            typeof(Game).GetMethod("GetGameName"));
     }
 }
