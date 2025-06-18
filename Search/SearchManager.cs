@@ -1,7 +1,6 @@
 using IGDB;
 using IGDB.Models;
 using System.Threading.Tasks;
-using System;
 using System.IO;
 using LudicoGTK.Utils;
 

@@ -1,16 +1,12 @@
-using System;
 using NLua;
-using LudicoGTK;
 using LudicoGTK.Ui;
 using LudicoGTK.Plugin;
 using System.IO;
-using Gtk;
 
 namespace LudicoGTK.Init;
 
 public class AppInitializer
 {
-    private readonly MainWindow _mainWindow = AppGlobals.window;
     private readonly Lua _lua = AppGlobals.Lua;
     private static string DocumentsPath = AppGlobals.GetDocumentsPath();
     private static string PluginPath = Path.Combine(DocumentsPath, "plugins");
@@ -40,7 +36,7 @@ public class AppInitializer
         foreach (var plugin in plugins)
         {
             var pluginName = Path.GetFileName(plugin);
-            _mainWindow.AddPlugin(pluginName, plugin);
+            Wrappers.AddPlugin(pluginName, plugin);
         } 
     }
 

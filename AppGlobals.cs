@@ -12,6 +12,11 @@ public static class AppGlobals
     public static MainWindow window { get; set; }
     public static readonly Lua Lua = new Lua();
     public static readonly string Version = "0.1";
+
+    // some elemnentwnts
+    public static ListStore pluginList { get; set; }
+    public static SearchEntry searchBar { get; set; }
+    public static Grid resultsBox { get; set; }
     
     public const string AppIdentifier = "uk.argonptg.Ludico";
 
