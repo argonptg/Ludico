@@ -10,6 +10,8 @@ namespace LudicoGTK.Ui
         [UI] private Grid _resultsBox = null!;
         [UI] private ListStore pluginList = null!;
 
+        [UI] private Stack _mainStack = null!;
+
         private readonly Handlers handlers;
 
         public MainWindow() : this(new Builder("MainWindow.glade")) { }
@@ -25,6 +27,7 @@ namespace LudicoGTK.Ui
             AppGlobals.pluginList = pluginList;
             AppGlobals.searchBar = _searchBar;
             AppGlobals.resultsBox = _resultsBox;
+            AppGlobals.mainStack = _mainStack;
 
             GLib.Idle.Add(() =>
             {
@@ -45,7 +48,9 @@ namespace LudicoGTK.Ui
 
 public static class StringExt
 {
+    #nullable enable // i fucking hate warnings
     public static string? Truncate(this string value, int maxLength, string truncationSuffix = "…")
+    # nullable disable
     {
         return value?.Length > maxLength
             ? value.Substring(0, maxLength) + truncationSuffix

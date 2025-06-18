@@ -8,9 +8,10 @@
     <property name="default-width">700</property>
     <property name="default-height">400</property>
     <child>
-      <object class="GtkStack" id="_parentStack">
+      <object class="GtkStack" id="_mainStack">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
+        <property name="transition-type">slide-left-right</property>
         <child>
           <!-- n-columns=3 n-rows=3 -->
           <object class="GtkGrid" id="_libPage">
@@ -175,9 +176,6 @@
             <property name="position">2</property>
           </packing>
         </child>
-        <child>
-          <placeholder/>
-        </child>
       </object>
     </child>
     <child type="titlebar">
@@ -191,7 +189,7 @@
             <property name="visible">True</property>
             <property name="can-focus">False</property>
             <property name="homogeneous">True</property>
-            <property name="stack">_parentStack</property>
+            <property name="stack">_mainStack</property>
           </object>
         </child>
       </object>

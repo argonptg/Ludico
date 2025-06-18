@@ -9,38 +9,59 @@ namespace LudicoGTK.Ui;
 
 public class Wrappers
 {
-    public static void ShowGameInfoDialog(Game game)
+    public static void SwitchPage(Game game)
     {
-        using var dialog = new Dialog();
-        
-        Log.Info($"Creating dialog for {game.Name}");
+        var pageName = "game_page";
 
-        dialog.Title = "Game Information";
-        dialog.TransientFor = AppGlobals.window;
-        dialog.Modal = true;
-        dialog.SetDefaultSize(500, 250);
+        Log.Info($"Creating page for {game.Name}");
+        Widget oldPage = AppGlobals.mainStack.GetChildByName(pageName);
 
-        var contentBox = dialog.ContentArea;
-        contentBox.BorderWidth = 10;
-        contentBox.Spacing = 6;
-
-        // Create the label with the game's info
-        var infoLabel = new Label($"Please select a plugin to download {game.Name}")
+        if (oldPage != null)
         {
-            Wrap = true
+            Log.Info("Removing old page");
+            AppGlobals.mainStack.Remove(oldPage);
+        }
+
+        // Main page design starts here
+        var gameContainer = new Box(Orientation.Vertical, 10)
+        {
+            new Label(game.Name)
         };
 
-        var comboBox = new ComboBox(AppGlobals.pluginList);
-        var cell = new CellRendererText();
-        comboBox.PackStart(cell, false);
-        comboBox.AddAttribute(cell, "text", 0);
+        AppGlobals.mainStack.AddNamed(gameContainer, pageName);
 
-        contentBox.PackStart(infoLabel, true, true, 0);
-        contentBox.PackStart(comboBox, true, true, 0);
+        gameContainer.ShowAll();
 
-        dialog.ShowAll();
+        AppGlobals.mainStack.VisibleChildName = pageName;
 
-        dialog.Run();
+        // using var dialog = new Dialog();
+
+        // dialog.Title = "Game Information";
+        // dialog.TransientFor = AppGlobals.window;
+        // dialog.Modal = true;
+        // dialog.SetDefaultSize(500, 250);
+
+        // var contentBox = dialog.ContentArea;
+        // contentBox.BorderWidth = 10;
+        // contentBox.Spacing = 6;
+
+        // // Create the label with the game's info
+        // var infoLabel = new Label($"Please select a plugin to download {game.Name}")
+        // {
+        //     Wrap = true
+        // };
+
+        // var comboBox = new ComboBox(AppGlobals.pluginList);
+        // var cell = new CellRendererText();
+        // comboBox.PackStart(cell, false);
+        // comboBox.AddAttribute(cell, "text", 0);
+
+        // contentBox.PackStart(infoLabel, true, true, 0);
+        // contentBox.PackStart(comboBox, true, true, 0);
+
+        // dialog.ShowAll();
+
+        // dialog.Run();
     }
 
     public static void AddPlugin(string pluginName, string pluginPath)
@@ -82,7 +103,7 @@ public class Wrappers
             gameBtn.Clicked += (sender, args) =>
             {
                 Log.Info($"You selected {game.Name}");
-                ShowGameInfoDialog(game);
+                SwitchPage(game);
             };
 
             // SEE I DIDN'T FORGET THIS TIME!!!!!!

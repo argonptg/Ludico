@@ -17,6 +17,7 @@ public static class AppGlobals
     public static ListStore pluginList { get; set; }
     public static SearchEntry searchBar { get; set; }
     public static Grid resultsBox { get; set; }
+    public static Stack mainStack { get; set; }
     
     public const string AppIdentifier = "uk.argonptg.Ludico";
 
