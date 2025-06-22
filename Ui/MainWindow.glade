@@ -102,38 +102,18 @@
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
                     <child>
-                      <!-- n-columns=3 n-rows=2 -->
-                      <object class="GtkGrid" id="_resultsBox">
+                      <object class="GtkFlowBox" id="_resultsBox">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
-                        <property name="margin-left">8</property>
-                        <property name="margin-right">8</property>
+                        <property name="halign">center</property>
+                        <property name="valign">start</property>
                         <property name="margin-start">8</property>
                         <property name="margin-end">8</property>
-                        <property name="margin-top">8</property>
                         <property name="margin-bottom">8</property>
-                        <property name="hexpand">True</property>
-                        <property name="vexpand">False</property>
-                        <property name="row-spacing">8</property>
+                        <property name="homogeneous">True</property>
                         <property name="column-spacing">8</property>
-                        <child>
-                          <placeholder/>
-                        </child>
-                        <child>
-                          <placeholder/>
-                        </child>
-                        <child>
-                          <placeholder/>
-                        </child>
-                        <child>
-                          <placeholder/>
-                        </child>
-                        <child>
-                          <placeholder/>
-                        </child>
-                        <child>
-                          <placeholder/>
-                        </child>
+                        <property name="row-spacing">8</property>
+                        <property name="selection-mode">multiple</property>
                       </object>
                     </child>
                   </object>

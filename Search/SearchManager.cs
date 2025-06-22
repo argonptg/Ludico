@@ -12,12 +12,20 @@ namespace LudicoGTK.Search;
 public class SearchManager
 {
     // i mean fuck it eh? these tokens are easy to get
-    private static readonly string SGDBApiKey = "62e37ba691f43e094075638e58af5208";
+    private static readonly string SGDBApiKey = "495049f2e68fdf828d8015658b7c41e7";
 
     private static readonly SteamGridDb sgdb = new(SGDBApiKey);
 
     public static async Task<SteamGridDbGame[]> Search(string query)
     {
+        if (query.Length <= 0)
+        {
+            SteamGridDbGame[] fakeGame = new SteamGridDbGame[10];
+
+            Log.Warn("Query is empty, not searching anything");
+            return fakeGame;
+        }
+
         var gameSearch = await sgdb.SearchForGamesAsync(query);
 
         if (gameSearch.Length < 0)
@@ -32,13 +40,12 @@ public class SearchManager
             var downloadPath = Path.Combine(
                 AppGlobals.GetDocumentsPath(),
                 "cache",
-                $"{game.Id}.jpg");
+                $"{game.Id}.cache");
 
             var grids = await sgdb.GetGridsByGameIdAsync(
                 game.Id,
                 types: SteamGridDbTypes.Static,
-                dimensions: SteamGridDbDimensions.W600H900,
-                formats: SteamGridDbFormats.Jpeg
+                dimensions: SteamGridDbDimensions.W600H900
             );
 
             if (grids.Length == 0)
@@ -59,6 +66,10 @@ public class SearchManager
                 {
                     Log.Error($"Failed to download grid for game {game.Name}");
                 }
+            }
+            else
+            {
+                Log.Info($"Image already downloaded for {game.Name}");
             }
         }
 

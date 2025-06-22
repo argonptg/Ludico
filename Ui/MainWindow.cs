@@ -7,7 +7,7 @@ namespace LudicoGTK.Ui
     public class MainWindow : Window
     {
         [UI] private SearchEntry _searchBar = null!;
-        [UI] private Grid _resultsBox = null!;
+        [UI] private FlowBox _resultsBox = null!;
         [UI] private ListStore pluginList = null!;
 
         [UI] private Stack _mainStack = null!;
@@ -48,9 +48,9 @@ namespace LudicoGTK.Ui
 
 public static class StringExt
 {
-    #nullable enable // i fucking hate warnings
+#nullable enable // i fucking hate warnings
     public static string? Truncate(this string value, int maxLength, string truncationSuffix = "…")
-    # nullable disable
+#nullable disable
     {
         return value?.Length > maxLength
             ? value.Substring(0, maxLength) + truncationSuffix
