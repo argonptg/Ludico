@@ -6,16 +6,25 @@ public abstract class Log // i dunno what abstract means i just know squiggly li
 {
     public static void Error(string text)
     {
-        Console.WriteLine($"[Error] {text}");
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.Write("[Error] ");
+        Console.ForegroundColor = ConsoleColor.White;
+        Console.WriteLine(text);
     }
-    
+
     public static void Info(string text)
     {
-        Console.WriteLine($"[Info] {text}");
+        Console.ForegroundColor = ConsoleColor.Blue;
+        Console.Write("[Info] ");
+        Console.ForegroundColor = ConsoleColor.White;
+        Console.WriteLine(text);
     }
     
     public static void Warn(string text)
     {
-        Console.WriteLine($"[Warning] {text}");
+        Console.ForegroundColor = ConsoleColor.DarkYellow;
+        Console.Write("[Warning] ");
+        Console.ForegroundColor = ConsoleColor.White;
+        Console.WriteLine(text);
     }
 }

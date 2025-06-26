@@ -1,10 +1,7 @@
-using IGDB;
-using IGDB.Models;
 using craftersmine.SteamGridDBNet;
 using System.Threading.Tasks;
 using System.IO;
 using LudicoGTK.Utils;
-using Gtk;
 using System;
 
 namespace LudicoGTK.Search;
@@ -12,7 +9,7 @@ namespace LudicoGTK.Search;
 public class SearchManager
 {
     // i mean fuck it eh? these tokens are easy to get
-    private static readonly string SGDBApiKey = "495049f2e68fdf828d8015658b7c41e7";
+    private static readonly string SGDBApiKey = AppGlobals.settings.SGDBKey;
 
     private static readonly SteamGridDb sgdb = new(SGDBApiKey);
 
@@ -26,7 +23,17 @@ public class SearchManager
             return fakeGame;
         }
 
-        var gameSearch = await sgdb.SearchForGamesAsync(query);
+        SteamGridDbGame[] gameSearch;
+
+        try
+        {
+            gameSearch = await sgdb.SearchForGamesAsync(query);
+        }
+        catch
+        {
+            Log.Error("Failed to query for the game, Is the api key set?");
+            return null;
+        }
 
         if (gameSearch.Length < 0)
         {
@@ -72,6 +79,8 @@ public class SearchManager
                 Log.Info($"Image already downloaded for {game.Name}");
             }
         }
+
+        await AppGlobals.manager.ProcessHydraSource();
 
         return gameSearch;
     }

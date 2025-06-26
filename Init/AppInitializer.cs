@@ -2,33 +2,33 @@ using NLua;
 using LudicoGTK.Ui;
 using LudicoGTK.Plugin;
 using System.IO;
+using GLib;
+using LudicoGTK.Search;
 
 namespace LudicoGTK.Init;
 
 public class AppInitializer
 {
     private readonly Lua _lua = AppGlobals.Lua;
-    private static string DocumentsPath = AppGlobals.GetDocumentsPath();
+    public static string DocumentsPath = AppGlobals.GetDocumentsPath();
     private static string PluginPath = Path.Combine(DocumentsPath, "plugins");
     private static string CachePath = Path.Combine(DocumentsPath, "cache");
-    
+
     public void Initialize()
     {
+        HydraManager.CreateDatabase();
         InitDirs();
         InitLua();
     }
-
+    
     private void InitDirs()
     {
         // Ensures the dirs/files actually exists        
         Directory.CreateDirectory(PluginPath);
         Directory.CreateDirectory(CachePath);
 
-        File.WriteAllText(
-            Path.Combine(DocumentsPath, "config.json"),
-            $@"{{ version: ""{AppGlobals.Version}"" }}"
-        ); // ^- Creates the config file, more on that eventually
-        
+        Settings.CreateSettingsFile();
+
         // List for plugins
         var plugins = Directory.GetFiles(PluginPath);
 
@@ -37,7 +37,7 @@ public class AppInitializer
         {
             var pluginName = Path.GetFileName(plugin);
             Wrappers.AddPlugin(pluginName, plugin);
-        } 
+        }
     }
 
     private void InitLua()

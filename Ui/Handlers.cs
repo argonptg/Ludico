@@ -4,6 +4,7 @@ using Gtk;
 
 using LudicoGTK.Utils;
 using LudicoGTK.Search;
+using IGDB.Models;
 
 namespace LudicoGTK.Ui;
 
@@ -23,31 +24,34 @@ public class Handlers
             AppGlobals.resultsBox.Remove(AppGlobals.resultsBox.Children[0]);
         }
 
-        /*
-         * Note to self:
-         * NEVER TRY TO CODE SICK AGAIN HOLY SHIT I CAN'T GET
-         * ANYTHING DONE SO I GOT GEMINI TO FIGURE OUT THE SIMPLEST
-         * STUFF
-         */
-        foreach (var game in search)
+        if (search != null)
         {
-
-            // Tends to error out a lot, so I just said fuck it
-            // and put it on a try/catch
-            try
+            /*
+            * Note to self:
+            * NEVER TRY TO CODE SICK AGAIN HOLY SHIT I CAN'T GET
+            * ANYTHING DONE SO I GOT GEMINI TO FIGURE OUT THE SIMPLEST
+            * STUFF
+            */
+            foreach (var game in search)
             {
-                if (game == null)
+
+                // Tends to error out a lot, so I just said fuck it
+                // and put it on a try/catch
+                try
                 {
-                    continue;
+                    if (game == null)
+                    {
+                        continue;
+                    }
+
+                    var label = new Label(game.Name.Truncate(25)); // eh, 25 is good enough
+
+                    wrappers.CreateGameBtn(game, AppGlobals.resultsBox);
                 }
-
-                var label = new Label(game.Name.Truncate(25)); // eh, 25 is good enough
-
-                wrappers.CreateGameBtn(game, AppGlobals.resultsBox);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine($"Error while processing the game, Skipping.\nDetails: {e}");
+                catch (Exception e)
+                {
+                    Console.WriteLine($"Error while processing the game, Skipping.\nDetails: {e}");
+                }
             }
         }
 

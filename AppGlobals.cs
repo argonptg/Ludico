@@ -3,6 +3,9 @@ using System.IO;
 using Gtk;
 using NLua;
 using LudicoGTK.Ui;
+using LudicoGTK.Init;
+using LudicoConfig = LudicoGTK.Init.Settings;
+using LudicoGTK.Search;
 
 namespace LudicoGTK;
 
@@ -12,6 +15,8 @@ public static class AppGlobals
     public static MainWindow window { get; set; }
     public static readonly Lua Lua = new Lua();
     public static readonly string Version = "0.1";
+    public static readonly SettingsModel settings = LudicoConfig.ReadSettings();
+    public static readonly HydraManager manager = new();
 
     // some elemnentwnts
     public static ListStore pluginList { get; set; }

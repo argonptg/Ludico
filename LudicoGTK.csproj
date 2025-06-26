@@ -15,10 +15,12 @@
 
   <ItemGroup>
     <PackageReference Include="craftersmine.SteamGridDB.Net" Version="1.1.7" />
+    <PackageReference Include="Dapper" Version="2.1.66" />
     <PackageReference Include="GtkSharp" Version="3.24.24.117-develop" />
     <PackageReference Include="IGDB" Version="6.1.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="NLua" Version="1.7.5" />
+    <PackageReference Include="System.Data.SQLite" Version="1.0.119" />
   </ItemGroup>
 
   <ItemGroup>
