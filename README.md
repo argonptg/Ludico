@@ -19,7 +19,7 @@ The landscape of open-source game launchers has become fragmented, leading to mu
 
 ## Implementation Status
 
-The immediate development focus is on the core UI and achieving full compatibility with the Project GLD plugin format.
+The immediate development focus is on the core UI and achieving _almost_ full compatibility with the Project GLD plugin format.
 
 ### Project GLD Plugin Status
 
