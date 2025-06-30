@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Data.SqlTypes;
+using System.Data.SQLite;
 using Newtonsoft.Json;
 using LudicoGTK.Utils;
 
@@ -33,15 +34,16 @@ public class HydraManager
 
         HydraSourceData data = JsonConvert.DeserializeObject<HydraSourceData>(hydraJsonString);
 
-        foreach (var game in data.Downloads)
-        {
-
+        foreach (var game in data.Downloads) {
+            Console.WriteLine(game.Title);
         }
     }
 
     private static void AddGameToDatabase()
     {
-        using var connection = new SQLiteConnection("Data Source=mydb.db");
+        var conStr = $"Data Source={Path.Combine(AppGlobals.GetDocumentsPath(), "hydra.db")}";
+
+        using var connection = new SQLiteConnection(conStr);
     }
 }
 

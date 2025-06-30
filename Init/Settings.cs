@@ -30,6 +30,12 @@ public class Settings
 
             string serializedSettings = JsonConvert.SerializeObject(baseFile, Formatting.Indented);
 
+            if (!Directory.Exists(AppGlobals.GetDocumentsPath()))
+            {
+                Log.Warn("Ludico path doesn't exist, creating one");
+                Directory.CreateDirectory(AppGlobals.GetDocumentsPath());
+            }
+
             try
             {
                 File.WriteAllText(settingsPath, serializedSettings);
