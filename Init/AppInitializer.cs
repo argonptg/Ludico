@@ -2,8 +2,9 @@ using NLua;
 using LudicoGTK.Ui;
 using LudicoGTK.Plugin;
 using System.IO;
-using GLib;
 using LudicoGTK.Search;
+using LudicoGTK.Utils;
+using System.Threading.Tasks;
 
 namespace LudicoGTK.Init;
 
@@ -14,10 +15,11 @@ public class AppInitializer
     private static string PluginPath = Path.Combine(DocumentsPath, "plugins");
     private static string CachePath = Path.Combine(DocumentsPath, "cache");
 
-    public void Initialize()
+    public async Task Initialize()
     {
         HydraManager.CreateDatabase();
         InitDirs();
+        await InitHydraDB();
         InitLua();
     }
     
@@ -37,6 +39,17 @@ public class AppInitializer
         {
             var pluginName = Path.GetFileName(plugin);
             Wrappers.AddPlugin(pluginName, plugin);
+        }
+    }
+
+    private async Task InitHydraDB()
+    {
+        var settings = Settings.ReadSettings();
+
+        foreach (var source in settings.HydraSources)
+        {
+            Log.Info($"Caching source with URL: {source}");
+            await HydraManager.ProcessHydraSource(source);
         }
     }
 

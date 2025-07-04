@@ -80,8 +80,6 @@ public class SearchManager
             }
         }
 
-        await AppGlobals.manager.ProcessHydraSource();
-
         return gameSearch;
     }
 }

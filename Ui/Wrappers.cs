@@ -3,6 +3,7 @@ using craftersmine.SteamGridDBNet;
 using Gdk;
 using Gtk;
 using IGDB.Models;
+using LudicoGTK.Search;
 using LudicoGTK.Utils;
 using IOPath = System.IO.Path;
 
@@ -34,6 +35,14 @@ public class Wrappers
         gameContainer.ShowAll();
 
         AppGlobals.mainStack.VisibleChildName = pageName;
+
+        // hydra testing stuff
+        var testSearch = HydraManager.SearchHydraSources(game.Name);
+
+        foreach (var searchedGame in testSearch)
+        {
+            Console.WriteLine($"Name: {searchedGame.GameTitle}, URI: {searchedGame.DownloadUrl}");
+        }
     }
 
     public static void AddPlugin(string pluginName, string pluginPath)
