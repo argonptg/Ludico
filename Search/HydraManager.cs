@@ -69,16 +69,18 @@ public class HydraManager
         using var connection = new SqliteConnection(conStr);
         connection.Open();
 
-        const string searchSql = $@"
-            SELECT * FROM games 
-            WHERE game_title MATCH '@Query';
+        string searchSql = $@"
+            SELECT
+                game_title AS GameTitle,
+                source_file AS SourceFile,
+                download_url AS DownloadUrl,
+                file_size AS FileSize,
+                upload_date AS UploadDate
+            FROM games 
+            WHERE game_title MATCH '{query}';
         ";
 
-        // damn this is easy af
-        var search = connection.Query<GameResult>(searchSql, new
-        {
-            Query = query
-        });
+        var search = connection.Query<GameResult>(searchSql);
 
         return search;
     }

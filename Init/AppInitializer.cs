@@ -5,6 +5,7 @@ using System.IO;
 using LudicoGTK.Search;
 using LudicoGTK.Utils;
 using System.Threading.Tasks;
+using System;
 
 namespace LudicoGTK.Init;
 
@@ -46,10 +47,33 @@ public class AppInitializer
     {
         var settings = Settings.ReadSettings();
 
-        foreach (var source in settings.HydraSources)
+        // some fuckery gpt wrote
+        var lastRunFile = Path.Combine(DocumentsPath, "hydra_cache_last_run.txt");
+
+        TimeSpan interval = TimeSpan.FromHours(24);
+        DateTime now = DateTime.UtcNow;
+        DateTime lastRun = DateTime.MinValue;
+
+        if (File.Exists(lastRunFile))
         {
-            Log.Info($"Caching source with URL: {source}");
-            await HydraManager.ProcessHydraSource(source);
+            var content = File.ReadAllText(lastRunFile);
+            if (DateTime.TryParse(content, out var parsed))
+                lastRun = parsed;
+            
+        }
+
+        if (now - lastRun >= interval)
+        {
+            // i mean it works
+            foreach (var source in settings.HydraSources)
+            {
+                Log.Info($"Caching source with URL: {source}");
+                await HydraManager.ProcessHydraSource(source);
+            }
+
+            // o
+            File.WriteAllText(lastRunFile, now.ToString("o"));
+            Log.Info("Wrote last run");
         }
     }
 

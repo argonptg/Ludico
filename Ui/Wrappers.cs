@@ -41,7 +41,9 @@ public class Wrappers
 
         foreach (var searchedGame in testSearch)
         {
-            Console.WriteLine($"Name: {searchedGame.GameTitle}, URI: {searchedGame.DownloadUrl}");
+            // does not use Log class, i know, this is for
+            // testing anyways so fuck you
+            Console.WriteLine($"Name: {searchedGame.GameTitle}, Source: {searchedGame.SourceFile}");
         }
     }
 
