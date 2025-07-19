@@ -70,17 +70,15 @@ public class HydraManager
         connection.Open();
 
         string searchSql = $@"
-            SELECT
-                game_title AS GameTitle,
-                source_file AS SourceFile,
-                download_url AS DownloadUrl,
-                file_size AS FileSize,
-                upload_date AS UploadDate
+            SELECT game_title AS GameTitle, source_file AS SourceFile, download_url AS DownloadUrl, file_size AS FileSize, upload_date AS UploadDate
             FROM games 
-            WHERE game_title MATCH '{query}';
+            WHERE game_title MATCH @query;
         ";
 
-        var search = connection.Query<GameResult>(searchSql);
+        // pesky quote/apostrophe
+        var escapedQuery = $"\"{query.Replace("\"", "\"\"")}\"";
+
+        var search = connection.Query<GameResult>(searchSql, new { query = escapedQuery });
 
         return search;
     }

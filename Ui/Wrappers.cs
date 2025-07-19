@@ -2,10 +2,10 @@ using System;
 using craftersmine.SteamGridDBNet;
 using Gdk;
 using Gtk;
-using IGDB.Models;
 using LudicoGTK.Search;
 using LudicoGTK.Utils;
 using IOPath = System.IO.Path;
+using LudicoGTK.Ui.GamePage;
 
 namespace LudicoGTK.Ui;
 
@@ -16,23 +16,32 @@ public class Wrappers
         var pageName = "game_page";
 
         Log.Info($"Creating page for {game.Name}");
-        Widget oldPage = AppGlobals.mainStack.GetChildByName(pageName);
+        Widget page = AppGlobals.mainStack.GetChildByName(pageName);
 
-        if (oldPage != null)
+        var heroPath = IOPath.Combine(
+            AppGlobals.GetDocumentsPath(),
+            "cache",
+            $"{game.Id}-hero.cache"
+        );
+
+        var pixbufImg = new Pixbuf(heroPath);
+
+        if (page is GameResultPage gameDetailPage)
         {
-            Log.Info("Removing old page");
-            AppGlobals.mainStack.Remove(oldPage);
+            gameDetailPage.Update(game, pixbufImg);
         }
 
-        // Main page design starts here
-        var gameContainer = new Box(Orientation.Vertical, 10)
+        if (page == null)
         {
-            new Label(game.Name)
-        };
+            Log.Info("Game page not found, creating it for the first time.");
 
-        AppGlobals.mainStack.AddNamed(gameContainer, pageName);
+            var newGamePage = new GameResultPage(game, pixbufImg);
 
-        gameContainer.ShowAll();
+            AppGlobals.mainStack.AddNamed(newGamePage, pageName);
+            newGamePage.Update(game, pixbufImg);
+            newGamePage.ShowAll();
+            page = newGamePage;
+        }
 
         AppGlobals.mainStack.VisibleChildName = pageName;
 
@@ -89,5 +98,4 @@ public class Wrappers
             Log.Error($"Failed to add button to the UI. Log: {e}");
         }
     }
-
 }

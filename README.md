@@ -2,7 +2,7 @@
 
 **A universal game launcher and downloader for Linux, built with C#, .NET 6, and Gtk#.**
 
-![aroace-ware](https://pride-badges.pony.workers.dev/static/v1?label=aroace-ware&stripeWidth=6&stripeColors=DA8700,E4C600,FFFFFF,5EA8D5,1F3653) ![made in br](https://raw.githubusercontent.com/pedromxavier/flag-badges/main/badges/BR.svg) ![.net](https://img.shields.io/badge/.NET-512BD4.svg?style=flat&logo=dotnet&logoColor=white) ![GTK](https://img.shields.io/badge/GTK-7FE719.svg?style=flat&logo=GTK&logoColor=white) ![Lua](https://img.shields.io/badge/Lua-2C2D72.svg?style=flat&logo=Lua&logoColor=white) ![IGDB](https://img.shields.io/badge/IGDB-9147FF.svg?style=flat&logo=IGDB&logoColor=white)
+![aroace-ware](https://pride-badges.pony.workers.dev/static/v1?label=aroace-ware&stripeWidth=6&stripeColors=DA8700,E4C600,FFFFFF,5EA8D5,1F3653) ![made in br](https://raw.githubusercontent.com/pedromxavier/flag-badges/main/badges/BR.svg) ![.net](https://img.shields.io/badge/.NET-512BD4.svg?style=flat&logo=dotnet&logoColor=white) ![GTK](https://img.shields.io/badge/GTK-7FE719.svg?style=flat&logo=GTK&logoColor=white) ![Lua](https://img.shields.io/badge/Lua-2C2D72.svg?style=flat&logo=Lua&logoColor=white)
 ---
 
 Ludico is a high-performance, universal platform for game launching. It is written in C# and uses Gtk# to create a native GTK 3 interface. The project starts by supporting plugins from [Project GLD](https://github.com/Y0URD34TH/Project-GLD), with future plans to integrate sources from [Hydra](https://github.com/hydralauncher/hydra).
